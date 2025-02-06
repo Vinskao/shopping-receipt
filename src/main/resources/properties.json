@@ -1,0 +1,12 @@
+{
+  "locations": {
+    "CA": {
+      "taxRate": 0.0975,
+      "exemptCategories": ["food"]
+    },
+    "NY": {
+      "taxRate": 0.08875,
+      "exemptCategories": ["food", "clothing"]
+    }
+  }
+} 

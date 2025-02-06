@@ -1,4 +1,4 @@
-package com.vinskao.receipt;  
+package com.vinskao.receipt.vo;  
 
 import java.math.BigDecimal;
 

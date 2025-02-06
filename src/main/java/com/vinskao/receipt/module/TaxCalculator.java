@@ -1,4 +1,4 @@
-package com.vinskao.receipt;
+package com.vinskao.receipt.module;
 
 public class TaxCalculator {
     
