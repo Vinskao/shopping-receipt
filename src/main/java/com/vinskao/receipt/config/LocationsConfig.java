@@ -5,24 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 此類直接對應 locations.json 中的配置，
- * JSON 結構為：
- * {
- *   "locations": {
- *     "CA": {
- *       "taxRate": 0.0975,
- *       "exemptCategories": ["food"]
- *     },
- *     "NY": {
- *       "taxRate": 0.08875,
- *       "exemptCategories": ["food", "clothing"]
- *     }
- *   }
- * }
+ * 此類直接對應 locations.json 中的配置
+ * @author VinsKao
  */
 public class LocationsConfig {
 
-    // locations 的 value 為一個 Map，包含 "taxRate" 與 "exemptCategories" 兩個鍵
+    // locations 的 value 為一個 Map，包含 "taxRate" 與 "exemptCategories" 兩個key
     private Map<String, Map<String, Object>> locations;
 
     public Map<String, Map<String, Object>> getLocations() {
@@ -35,7 +23,7 @@ public class LocationsConfig {
 
     /**
      * 取得指定地區的稅率。
-     * @param location 地區代號，例如 "CA" 或 "NY"
+     * @param location 地區代號
      * @return 稅率 (BigDecimal)
      */
     public BigDecimal getTaxRate(String location) {
@@ -51,7 +39,7 @@ public class LocationsConfig {
 
     /**
      * 取得指定地區的免稅商品類別清單。
-     * @param location 地區代號，例如 "CA" 或 "NY"
+     * @param location 地區代號
      * @return 免稅類別清單
      */
     @SuppressWarnings("unchecked")
