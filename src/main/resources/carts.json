@@ -1,0 +1,38 @@
+{
+  "case1": {
+    "purchase1": {
+      "productName": "book",
+      "quantity": 1,
+      "category": "misc"
+    },
+    "purchase2": {
+      "productName": "potato_chips",
+      "quantity": 1,
+      "category": "food"
+    }
+  },
+  "case2": {
+    "purchase1": {
+      "productName": "book",
+      "quantity": 1,
+      "category": "misc"
+    },
+    "purchase2": {
+      "productName": "pencil",
+      "quantity": 3,
+      "category": "misc"
+    }
+  },
+  "case3": {
+    "purchase1": {
+      "productName": "pencil",
+      "quantity": 2,
+      "category": "misc"
+    },
+    "purchase2": {
+      "productName": "shirt",
+      "quantity": 1,
+      "category": "clothing"
+    }
+  }
+}

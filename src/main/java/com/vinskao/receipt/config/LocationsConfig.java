@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 此類直接對應 properties.json 中的配置，
+ * 此類直接對應 locations.json 中的配置，
  * JSON 結構為：
  * {
  *   "locations": {
@@ -20,7 +20,7 @@ import java.util.Map;
  *   }
  * }
  */
-public class PropertiesConfig {
+public class LocationsConfig {
 
     // locations 的 value 為一個 Map，包含 "taxRate" 與 "exemptCategories" 兩個鍵
     private Map<String, Map<String, Object>> locations;
