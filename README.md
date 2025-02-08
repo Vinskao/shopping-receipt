@@ -7,15 +7,24 @@ shopping-receipt
     │       └── com
     │           └── vinskao
     │               └── receipt
-    │                   ├── Item.java
-    │                   ├── TaxCalculator.java
-    │                   ├── ShoppingCart.java
-    │                   └── ReceiptPrinter.java
+    │                   ├── model
+    |                   |   └── vo
+    │                   |   |   └── Item.java
+    |                   |   └── enum
+    │                   |       └── Location.java
+    │                   | 
+    |                   └── config
+    |                   └── module
+    │                       ├── TaxCalculator.java
+    │                       ├── ShoppingCart.java
+    │                       └── ReceiptPrinter.java
+    │               └── resources    
     └── test
         └── java
             └── com
                 └── vinskao
                     └── receipt
-                        └── TaxCalculatorTest.java
+                        └── module
+                            └── TaxCalculatorTest.java
 ```
 

@@ -1,4 +1,4 @@
-package com.vinskao.receipt;
+package com.vinskao.receipt.module;
 
 import static org.mockito.Mockito.*;
 
@@ -12,14 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.vinskao.receipt.config.LocationsConfig;
+import com.vinskao.receipt.model.LocationDO;
 import com.vinskao.receipt.module.TaxCalculator;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaxCalculatorTest {
     @Mock
-    private LocationsConfig locationsConfig;
+    private LocationDO locationsConfig;
     @InjectMocks
     private TaxCalculator taxCalculator;
 

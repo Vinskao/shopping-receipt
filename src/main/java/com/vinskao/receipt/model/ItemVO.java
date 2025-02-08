@@ -1,17 +1,17 @@
-package com.vinskao.receipt.vo;  
+package com.vinskao.receipt.model;  
 
 import java.math.BigDecimal;
 
-public class Item {
+public class ItemVO {
     private String productName;
     private BigDecimal price;
     private int quantity;
-    private Location location;
+    private LocationENUM location;
 
-    public Item() {
+    public ItemVO() {
     }
 
-    public Item(String productName, BigDecimal price, int quantity, Location location) {
+    public ItemVO(String productName, BigDecimal price, int quantity, LocationENUM location) {
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
@@ -43,11 +43,11 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public Location getLocation() {
+    public LocationENUM getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationENUM location) {
         this.location = location;
     }
     

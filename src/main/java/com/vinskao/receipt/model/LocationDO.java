@@ -1,4 +1,4 @@
-package com.vinskao.receipt.config;
+package com.vinskao.receipt.model;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Map;
  * 此類直接對應 locations.json 中的配置
  * @author VinsKao
  */
-public class LocationsConfig {
+public class LocationDO {
 
     // locations 的 value 為一個 Map，包含 "taxRate" 與 "exemptCategories" 兩個key
     private Map<String, Map<String, Object>> locations;

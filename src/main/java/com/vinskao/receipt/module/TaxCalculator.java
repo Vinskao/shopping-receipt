@@ -3,14 +3,14 @@ package com.vinskao.receipt.module;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.vinskao.receipt.config.LocationsConfig;
 import com.vinskao.receipt.config.LocationsConfigLoader;
-import com.vinskao.receipt.vo.Item;
+import com.vinskao.receipt.model.ItemVO;
+import com.vinskao.receipt.model.LocationDO;
 
 /**
  * TaxCalculator 類別負責根據商品的所在區域與類別資訊計算所需繳納的稅金。
  * 此類別在建構時會從設定檔中讀取各地區的稅率與免稅產品類別配置，
- * 並透過 {@link #determineTax(Item)} 方法根據商品資訊判斷是否需課稅，
+ * 並透過 {@link #determineTax(ItemVO)} 方法根據商品資訊判斷是否需課稅，
  * 若屬於免稅產品，則回傳零稅率，否則回傳該區域之標準稅率。
  * 
  * @author VinsKao
@@ -22,7 +22,7 @@ public class TaxCalculator {
      * 此設定物件由 {@link LocationsConfigLoader} 讀取數據，
      * 用以判斷各地區適用的稅率與免稅產品類別。
      */
-    private LocationsConfig locationsConfig;
+    private LocationDO locationsConfig;
     
     /**
      * 建構子 TaxCalculator
@@ -41,7 +41,7 @@ public class TaxCalculator {
      * @return 若商品符合免稅條件則回傳 {@link BigDecimal#ZERO}，否則回傳該區域的稅率
      * @throws IllegalArgumentException 當 {@code item} 或其 {@code Location} 為 null 時拋出此異常
      */
-    public BigDecimal determineTax(Item item){
+    public BigDecimal determineTax(ItemVO item){
         if(item == null || item.getLocation() == null){
             throw new IllegalArgumentException("Item 或 Location 不能為 null");
         }
@@ -71,7 +71,7 @@ public class TaxCalculator {
      * @return 所有商品稅金的加總。
      * @throws IllegalArgumentException 當 items 為 null 時或任何商品為 null 時拋出此異常。
      */
-    public BigDecimal calculateTotalTax(List<Item> items) {
+    public BigDecimal calculateTotalTax(List<ItemVO> items) {
         if (items == null) {
             throw new IllegalArgumentException("商品列表不能為 null");
         }

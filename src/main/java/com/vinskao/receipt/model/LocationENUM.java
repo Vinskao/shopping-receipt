@@ -1,19 +1,19 @@
-package com.vinskao.receipt.vo;
+package com.vinskao.receipt.model;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-public enum Location {
+public enum LocationENUM {
     CA,
     NY;
 
-    // 靜態變數由外部注入 PropertiesConfig 中的 locations 設定
+    // 外部注入 LocationsDO 中的 locations 設定
     private static Map<String, Map<String, Object>> locationConfigs;
 
     /**
      * 注入配置，必須於應用初始化時呼叫一次。
-     * 注入內容建議由 PropertiesConfigLoader.load() 取得後，調用 getLocations() 取得。
+     * 注入內容建議由 LocationsConfigLoader.load() 取得後，調用 getLocations() 取得。
      */
     public static void setLocationConfigs(Map<String, Map<String, Object>> configs) {
         locationConfigs = configs;
@@ -21,7 +21,7 @@ public enum Location {
 
     private Map<String, Object> getConfig() {
         if (locationConfigs == null) {
-            throw new IllegalStateException("Location configs 尚未初始化，請先透過 setLocationConfigs() 注入配置。");
+            throw new IllegalStateException("Location configs 尚未初始化");
         }
         Map<String, Object> config = locationConfigs.get(this.name());
         if (config == null) {
