@@ -98,29 +98,33 @@ public class ReceiptPrinter {
 
         // 迭代每筆購買資料並格式化列出
         for (ItemVO item : items.values()) {
-            String formattedName = itemNameFormatter(item.getProductName());
-            BigDecimal price = prices.getOrDefault(item.getProductName(), BigDecimal.ZERO);
-            int quantity = item.getQuantity();
+            String formattedName = itemNameFormatter(item.getProductName()); // 格式化商品名稱
+            BigDecimal price = prices.getOrDefault(item.getProductName(), BigDecimal.ZERO); // 取得商品價格，若無則設為0
+            int quantity = item.getQuantity(); // 取得購買數量
             
-            String prodName = String.format("%-" + cellWidth + "s", formattedName);
-            String priceStr = String.format("%" + cellWidth + ".2f", price.doubleValue());
-            String qtyStr = String.format("%" + cellWidth + "d", quantity);
+            String prodName = String.format("%-" + cellWidth + "s", formattedName); // 格式化商品名稱欄位
+            String priceStr = String.format("%" + cellWidth + ".2f", price.doubleValue()); // 格式化價格欄位，保留兩位小數
+            String qtyStr = String.format("%" + cellWidth + "d", quantity); // 格式化數量欄位
             table.append("|").append(prodName).append(" ").append(priceStr).append(" ").append(qtyStr).append("|").append("\n");
             subtotal = shoppingCart.calSubtotal(items.values());
         }
 
-        BigDecimal tax = shoppingCart.calTax(items.values());
-        BigDecimal roundedTax = tax.setScale(1, RoundingMode.HALF_UP);
-        // System.err.println(roundedTax);
+        BigDecimal tax = shoppingCart.calTax(items.values()); // 計算稅金
+        // 防止calTax返回null導致NullPointerException
+        if (tax == null) {
+            tax = BigDecimal.ZERO;
+        }
+        BigDecimal roundedTax = tax.setScale(1, RoundingMode.HALF_UP); // 將稅金四捨五入到小數點後一位
+        // 如果四捨五入後仍有餘額，則再加0.05
         if (tax.subtract(roundedTax).compareTo(BigDecimal.ZERO) > 0) {
             roundedTax = roundedTax.add(new BigDecimal("0.05"));
         }
-        BigDecimal total = shoppingCart.calTotal(items.values());
+        BigDecimal total = shoppingCart.calTotal(items.values()); // 計算總金額
 
         table.append("|").append(repeat(" ", totalInnerWidth)).append("|").append("\n");
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal));
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", roundedTax)); // Use .2f for 2 decimal places
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "total", total));
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal)); // 格式化小計金額
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", roundedTax)); // 格式化稅金，保留兩位小數
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "total", total)); // 格式化總金額
         // 輸出表格的底部邊框
         table.append(border);
         return table.toString();

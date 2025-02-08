@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 此類直接對應 locations.json 中的配置
+ * LocationDO 類別用於直接對應 locations.json 設定檔中的配置資料。
  * @author VinsKao
  */
 public class LocationDO {

@@ -2,6 +2,10 @@ package com.vinskao.receipt.model;
 
 import java.math.BigDecimal;
 
+/**
+ * ItemVO 表示購物車中單個商品的資料物件，包含商品名稱、價格、數量、地區和類別資訊。
+ * @author VinsKao
+ */
 public class ItemVO {
     private String productName;
     private BigDecimal price;
