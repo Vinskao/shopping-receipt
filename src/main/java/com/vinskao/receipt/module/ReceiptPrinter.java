@@ -1,6 +1,7 @@
 package com.vinskao.receipt.module;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 import com.vinskao.receipt.config.CartsConfigLoader;
@@ -88,7 +89,7 @@ public class ReceiptPrinter {
         BigDecimal subtotal = BigDecimal.ZERO;
 
         // 為避免 TaxCalculator 因 item.getLocation() 為 null 拋出異常，
-        // 先遍歷所有 ItemVO，若 location 為 null，則設定一個預設值。
+        // 先遍歷所有 ItemVO，若 location 為 null，則設定NA。
         for (ItemVO item : items.values()) {
             if (item.getLocation() == null) {
                 item.setLocation(com.vinskao.receipt.model.LocationENUM.NA);
@@ -109,11 +110,16 @@ public class ReceiptPrinter {
         }
 
         BigDecimal tax = shoppingCart.calTax(items.values());
+        BigDecimal roundedTax = tax.setScale(1, RoundingMode.HALF_UP);
+        // System.err.println(roundedTax);
+        if (tax.subtract(roundedTax).compareTo(BigDecimal.ZERO) > 0) {
+            roundedTax = roundedTax.add(new BigDecimal("0.05"));
+        }
         BigDecimal total = shoppingCart.calTotal(items.values());
 
         table.append("|").append(repeat(" ", totalInnerWidth)).append("|").append("\n");
         table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal));
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", tax));
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", roundedTax)); // Use .2f for 2 decimal places
         table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "total", total));
         // 輸出表格的底部邊框
         table.append(border);

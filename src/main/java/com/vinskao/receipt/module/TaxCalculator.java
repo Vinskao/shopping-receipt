@@ -60,16 +60,15 @@ public class TaxCalculator {
         BigDecimal taxRate = locationsConfig.getTaxRate(location);
         List<String> exemptCategories = locationsConfig.getExemptCategories(location);
         
-        // 如果配置的免稅類別包含此商品的類別則免稅
+        // DEBUG：印出計算數學
         if (exemptCategories.contains(category)) {
-            System.err.println("Tax: Item '" + item.getProductName() 
-                + "' location '" + location + "' 免稅'" + category + "'. Tax rate = 0.");
+            // System.err.println("Tax: Item '" + item.getProductName() 
+            //     + "' location '" + location + "' 免稅'" + category + "'. Tax rate = 0.");
             return BigDecimal.ZERO;
         }
         
-        System.err.println("Tax: Item '" + item.getProductName() 
-            + "' location '" + location + "' tax rate: " + taxRate + ".");
-        // 回傳該區域的稅
+        // System.err.println("Tax: Item '" + item.getProductName() 
+        //     + "' location '" + location + "' tax rate: " + taxRate + ".");
         return taxRate;        
     }
 
@@ -104,19 +103,19 @@ public class TaxCalculator {
                                     .multiply(BigDecimal.valueOf(item.getQuantity()));
                         // 計算該商品需支付的稅額（稅額 = 總價 * 稅率）
                         BigDecimal taxAmount = itemTotal.multiply(taxRate);
-                        
-                        // 印出計算過程數學詳情至 error stream
-                        if(taxRate.compareTo(BigDecimal.ZERO) == 0){
-                            System.err.println("Tax: Item '" + item.getProductName() 
-                                    + "' 免稅. (" + item.getPrice() + " * " 
-                                    + item.getQuantity() + " = " + itemTotal + ") * " 
-                                    + taxRate + " = " + taxAmount);
-                        } else {
-                            System.err.println("Tax: " 
-                                    + item.getProductName() + "': (" + item.getPrice() + " * " 
-                                    + item.getQuantity() + " = " + itemTotal + ") * " 
-                                    + taxRate + " = " + taxAmount);
-                        }
+
+                        // DEBUG：印出計算數學
+                        // if(taxRate.compareTo(BigDecimal.ZERO) == 0){
+                        //     System.err.println("Tax: Item '" + item.getProductName() 
+                        //             + "' 免稅. (" + item.getPrice() + " * " 
+                        //             + item.getQuantity() + " = " + itemTotal + ") * " 
+                        //             + taxRate + " = " + taxAmount);
+                        // } else {
+                        //     System.err.println("Tax: " 
+                        //             + item.getProductName() + "': (" + item.getPrice() + " * " 
+                        //             + item.getQuantity() + " = " + itemTotal + ") * " 
+                        //             + taxRate + " = " + taxAmount);
+                        // }
                         return taxAmount;
                     })
                     // 將所有計算出來的稅額相加， 從 0 起始累加每一次 map 中的 return
