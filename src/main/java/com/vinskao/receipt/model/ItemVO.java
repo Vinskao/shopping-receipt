@@ -7,15 +7,17 @@ public class ItemVO {
     private BigDecimal price;
     private int quantity;
     private LocationENUM location;
+    private String category;
 
     public ItemVO() {
     }
 
-    public ItemVO(String productName, BigDecimal price, int quantity, LocationENUM location) {
+    public ItemVO(String productName, BigDecimal price, int quantity, LocationENUM location, String category) {
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
         this.location = location;
+        this.category = category;
     }
 
     // Getter 與 Setter
@@ -51,12 +53,21 @@ public class ItemVO {
         this.location = location;
     }
     
+    public String getCategory() {
+        return category;
+    }
+    
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
     @Override
     public String toString() {
         return "Item{" +
                "productName='" + productName + '\'' +
                ", price=" + price +
                ", quantity=" + quantity +
+               ", category=" + category +
                ", location=" + location +
                '}';
     }
