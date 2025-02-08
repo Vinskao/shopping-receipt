@@ -87,6 +87,14 @@ public class ReceiptPrinter {
 
         BigDecimal subtotal = BigDecimal.ZERO;
 
+        // 為避免 TaxCalculator 因 item.getLocation() 為 null 拋出異常，
+        // 先遍歷所有 ItemVO，若 location 為 null，則設定一個預設值。
+        for (ItemVO item : items.values()) {
+            if (item.getLocation() == null) {
+                item.setLocation(com.vinskao.receipt.model.LocationENUM.NA);
+            }
+        }
+
         // 迭代每筆購買資料並格式化列出
         for (ItemVO item : items.values()) {
             String formattedName = itemNameFormatter(item.getProductName());
@@ -100,8 +108,8 @@ public class ReceiptPrinter {
             subtotal = shoppingCart.calSubtotal(items.values());
         }
 
-        BigDecimal tax = subtotal.multiply(new BigDecimal("0.10"));
-        BigDecimal total = subtotal.add(tax);
+        BigDecimal tax = shoppingCart.calTax(items.values());
+        BigDecimal total = shoppingCart.calTotal(items.values());
 
         table.append("|").append(repeat(" ", totalInnerWidth)).append("|").append("\n");
         table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal));

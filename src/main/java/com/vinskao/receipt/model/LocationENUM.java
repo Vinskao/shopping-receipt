@@ -6,7 +6,8 @@ import java.util.Map;
 
 public enum LocationENUM {
     CA,
-    NY;
+    NY, 
+    NA;
 
     // 外部注入 LocationsDO 中的 locations 設定
     private static Map<String, Map<String, Object>> locationConfigs;

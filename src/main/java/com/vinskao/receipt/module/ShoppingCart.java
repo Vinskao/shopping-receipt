@@ -3,7 +3,9 @@ package com.vinskao.receipt.module;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+import com.vinskao.receipt.config.PricesConfigLoader;
 import com.vinskao.receipt.model.ItemVO;
+import com.vinskao.receipt.model.PriceDO;
 
 /**
  * ShoppingCart 購物車類別，用於計算購物車中物品的小計、稅金與總金額。
@@ -16,6 +18,17 @@ public class ShoppingCart {
     private TaxCalculator taxCalculator;
 
     /**
+     * 用於從 JSON 中取得價格資料的 PriceDO
+     */
+    private PriceDO priceDO;
+
+    public ShoppingCart() {
+        this.taxCalculator = new TaxCalculator();
+        // 將 prices.json 讀取成 PriceDO 物件
+        this.priceDO = PricesConfigLoader.load();
+    }
+
+    /**
      * 計算購物車中所有物品的小計（不含稅）。
      *
      * @param items 購物車中的物品清單，每個物品包含價格與數量資訊
@@ -24,15 +37,19 @@ public class ShoppingCart {
     public BigDecimal calSubtotal(Collection<ItemVO> items) {
         BigDecimal subtotal = BigDecimal.ZERO;
         for (ItemVO item : items) {
+            // 嘗試使用 ItemVO 中所帶的價格
             BigDecimal price = item.getPrice();
             
-            // Check if price is null and handle it
+            // 若ItemVO的price為null，則從PriceDO映射中取得對應的價格
+            if (price == null) {
+                price = priceDO.getPrices().get(item.getProductName());
+            }
+            
             if (price != null) {
                 subtotal = subtotal.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
             } else {
-                // Log the issue or handle it as needed, for now we'll skip the item
-                // You could also log a warning message or set a default value for price
-                System.out.println("Warning: Item price is null for item: " + item.getProductName());
+                // 若從PriceDO中仍然找不到價格，將印出警告訊息。
+                System.out.println("Item 價格為 null: " + item.getProductName());
             }
         }
         return subtotal;
@@ -58,25 +75,32 @@ public class ShoppingCart {
         return calSubtotal(items).add(calTax(items));
     }
 
+    /**
+     * 先全部轉小寫，再將開頭大寫、底鹹轉空格。
+     */
     public String itemNameFormatter(String name) {
         if (name == null || name.isEmpty()) {
             return name;
         }
-    
+        
+        // 將整個字串先全部轉成小寫
+        name = name.toLowerCase();
+        
         StringBuilder formattedName = new StringBuilder();
-        // Boolean flag indicating whether the next encountered character should be converted to uppercase
+        // boolean標誌，表示下一個字符需要轉成大寫
         boolean capitalizeNext = true;
-    
+        
         for (int i = 0; i < name.length(); i++) {
             char currentChar = name.charAt(i);
-    
+            
             if (currentChar == '_') {
-                // Replace underscore with a space and set flag so that the next character is capitalized
                 formattedName.append(' ');
+                // 下一個字符轉大寫
                 capitalizeNext = true;
             } else {
                 if (capitalizeNext) {
                     formattedName.append(Character.toUpperCase(currentChar));
+                    // 停止轉大寫
                     capitalizeNext = false;
                 } else {
                     formattedName.append(currentChar);
