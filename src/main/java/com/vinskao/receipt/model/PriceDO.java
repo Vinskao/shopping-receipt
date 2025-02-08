@@ -25,7 +25,7 @@ public class PriceDO {
      * 處理 JSON 中不固定的屬性（沒有事先定義好成員變數），
      * 當讀取 JSON 時，遇到新增的屬性會呼叫此方法進行設定。
      *
-     * @param key   商品名稱，作為價格資料的鍵值
+     * @param key   商品名稱，作為價格資料的key值
      * @param value 該商品對應的價格 (BigDecimal)
      */
     @JsonAnySetter

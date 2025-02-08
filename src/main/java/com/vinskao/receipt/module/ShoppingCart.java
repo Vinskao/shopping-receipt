@@ -1,7 +1,7 @@
 package com.vinskao.receipt.module;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 
 import com.vinskao.receipt.model.ItemVO;
 
@@ -21,10 +21,19 @@ public class ShoppingCart {
      * @param items 購物車中的物品清單，每個物品包含價格與數量資訊
      * @return 返回所有物品價格乘以數量的累計總和
      */
-    public BigDecimal calSubtotal(List<ItemVO> items) {
+    public BigDecimal calSubtotal(Collection<ItemVO> items) {
         BigDecimal subtotal = BigDecimal.ZERO;
         for (ItemVO item : items) {
-            subtotal = subtotal.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            BigDecimal price = item.getPrice();
+            
+            // Check if price is null and handle it
+            if (price != null) {
+                subtotal = subtotal.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
+            } else {
+                // Log the issue or handle it as needed, for now we'll skip the item
+                // You could also log a warning message or set a default value for price
+                System.out.println("Warning: Item price is null for item: " + item.getProductName());
+            }
         }
         return subtotal;
     }
@@ -35,7 +44,7 @@ public class ShoppingCart {
      * @param items 購物車中的物品清單
      * @return 返回所有物品的稅金總和
      */
-    public BigDecimal calTax(List<ItemVO> items) {
+    public BigDecimal calTax(Collection<ItemVO> items) {
         return taxCalculator.calculateTotalTax(items);
     }
 
@@ -45,7 +54,7 @@ public class ShoppingCart {
      * @param items 購物車中的物品清單.
      * @return 返回小計與稅金相加後的總金額
      */
-    public BigDecimal calTotal(List<ItemVO> items) {
+    public BigDecimal calTotal(Collection<ItemVO> items) {
         return calSubtotal(items).add(calTax(items));
     }
 

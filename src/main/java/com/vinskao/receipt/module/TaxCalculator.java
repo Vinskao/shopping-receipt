@@ -1,6 +1,7 @@
 package com.vinskao.receipt.module;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import com.vinskao.receipt.config.LocationsConfigLoader;
@@ -70,7 +71,7 @@ public class TaxCalculator {
      * @return 所有商品稅金的加總。
      * @throws IllegalArgumentException 當 items 為 null 時或任何商品為 null 時拋出此異常。
      */
-    public BigDecimal calculateTotalTax(List<ItemVO> items) {
+    public BigDecimal calculateTotalTax(Collection<ItemVO> items) {
         if (items == null) {
             throw new IllegalArgumentException("商品列表不能為 null");
         }
