@@ -13,7 +13,7 @@ import com.vinskao.receipt.model.PriceDO;
 /**
  * TaxCalculator 類別負責根據商品的所在區域與類別資訊計算所需繳納的稅金。
  * 從設定檔中讀取各地區的稅率與免稅產品類別配置，
- * 若屬於免稅產品，則回傳零稅率，否則回傳該區域稅率。
+ * 若屬於免稅產品，則回傳0稅率，否則回傳該區域稅率。
  * 
  * @author VinsKao
  */

@@ -3,20 +3,18 @@ package com.vinskao.receipt.module;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 /**
- * ReceiptPrinter 的單元測試類
- * 測試收據列印相關的功能，包括：
- * 1. 收據表格生成
- * 2. 商品名稱格式化
+ * ReceiptPrinter 單元測試
+ * 
  * @author VinsKao
  */
 @ExtendWith(MockitoExtension.class)
@@ -30,44 +28,64 @@ public class ReceiptPrinterTest {
     private ReceiptPrinter receiptPrinter;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    void setup() {}
+
+    /**
+     * 商品名稱格式化功能的測試集合
+     */
+    @Nested
+    class ItemNameFormatterTests {
+        
+        /**
+         * 測試商品名稱格式的轉換
+         * 包含底線轉換、大小寫處理、多重底線及特殊情況
+         */
+        @Test
+        void shouldFormatItemNamesCorrectly() {
+            // Given
+            String underscoreInput = "laptop_computer";
+            String uppercaseInput = "LAPTOP";
+            String multipleUnderscoreInput = "i_am_vinskao";
+            
+            // When & Then
+            assertEquals("Laptop Computer", receiptPrinter.itemNameFormatter(underscoreInput),
+                    "應將底線轉換為空格並將每個單字首字母大寫");
+            
+            assertEquals("Laptop", receiptPrinter.itemNameFormatter(uppercaseInput),
+                    "應將全大寫字串轉換為首字母大寫格式");
+            
+            assertEquals("I Am Vinskao", receiptPrinter.itemNameFormatter(multipleUnderscoreInput),
+                    "應正確處理多個底線的情況");
+        }
+
+        /**
+         * 測試特殊輸入情況的處理
+         */
+        @Test
+        void shouldHandleSpecialCases() {
+            // 測試空字串
+            assertEquals("", receiptPrinter.itemNameFormatter(""),
+                    "空字串應該回傳空字串");
+            
+            // 測試 null 值
+            assertNull(receiptPrinter.itemNameFormatter(null),
+                    "null 輸入應該回傳 null");
+        }
     }
 
     /**
-     * 測試商品名稱格式化功能
-     * 場景：測試各種格式的商品名稱轉換
+     * 收據表格生成功能的測試集合
      */
-    @Test
-    public void testItemNameFormatter() {
-        // 測試底線轉換為空格，並將首字母大寫
-        assertEquals("Laptop Computer", receiptPrinter.itemNameFormatter("laptop_computer"));
+    @Nested
+    class ReceiptFrameTests {
         
-        // 測試全大寫轉換
-        assertEquals("Laptop", receiptPrinter.itemNameFormatter("LAPTOP"));
-        
-        // 測試多個底線
-        assertEquals("This Is A Test", receiptPrinter.itemNameFormatter("this_is_a_test"));
-        
-        // 測試空字串
-        assertEquals("", receiptPrinter.itemNameFormatter(""));
-        
-        // 測試 null 值
-        assertNull(receiptPrinter.itemNameFormatter(null));
-    }
-
-    /**
-     * 測試收據表格生成功能
-     * 場景：驗證表格格式是否正確
-     */
-    @Test
-    public void testPrintReceiptFrames() {
-        // 由於 printReceiptFrames 方法主要是整合功能，
-        // 這裡我們主要測試它不會拋出異常
-        try {
-            receiptPrinter.printReceiptFrames();
-        } catch (Exception e) {
-            fail("Should not throw exception: " + e.getMessage());
+        /**
+         * 測試收據表格生成的基本功能
+         */
+        @Test
+        void shouldPrintReceiptFramesWithoutException() {
+            assertDoesNotThrow(() -> receiptPrinter.printReceiptFrames(),
+                    "收據表格生成不應拋出異常");
         }
     }
 } 
