@@ -60,6 +60,8 @@ shopping-receipt
 
 ### locations.json
 - 用於設定不同地區的稅率
+- 注意：新增地區時，必須同步在 `LocationENUM.java` 中新增對應的枚舉值
+- 例如：新增 "TP" 地區時，需要在LocationENUM 中加入 `TP` 枚舉值
 
 ### carts.json
 - 用於設定購物車內容
