@@ -131,7 +131,7 @@ public class ReceiptPrinterTest {
             // 設置模擬行為
             when(shoppingCart.calSubtotal(anyCollection())).thenReturn(new BigDecimal("21.98"));
             when(shoppingCart.calTax(anyCollection())).thenReturn(new BigDecimal("1.80"));
-            when(shoppingCart.calTotal(anyCollection())).thenReturn(new BigDecimal("23.73"));
+            when(shoppingCart.calTotal(anyCollection())).thenReturn(new BigDecimal("23.78"));
 
             // 執行測試
             String receipt = receiptPrinter.getTable(items, prices);
@@ -146,7 +146,7 @@ public class ReceiptPrinterTest {
                 "|                                                     |\n" +
                 "|subtotal                                        21.98|\n" +
                 "|tax                                              1.80|\n" +
-                "|total                                           23.73|\n" +
+                "|total                                           23.78|\n" +
                 "+-----------------------------------------------------+";
             assertEquals(expectedReceipt, receipt);
         }
