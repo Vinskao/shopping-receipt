@@ -1,7 +1,6 @@
 package com.vinskao.receipt.module;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Map;
 
 import com.vinskao.receipt.config.CartsConfigLoader;
@@ -63,7 +62,7 @@ public class ReceiptPrinter {
      * @param items  購買資料，key為 purchaseKey，值為單一購買項目的 ItemVO 物件
      * @param prices 商品價格資料，key為商品名稱，值為商品價格（以 BigDecimal 表示）
      */
-    private String getTable(Map<String, ItemVO> items, Map<String, BigDecimal> prices) {
+    String getTable(Map<String, ItemVO> items, Map<String, BigDecimal> prices) {
         int columnWidth = 15; // 基礎寬度 15 字元
         int cellWidth = columnWidth + 2; // 每個 cell 包含左右各一個空白，共 17 字元
         int numColumns = 3; // 表格設計為三個欄位：item、price 與 qty
@@ -114,17 +113,12 @@ public class ReceiptPrinter {
         if (tax == null) {
             tax = BigDecimal.ZERO;
         }
-        BigDecimal roundedTax = tax.setScale(1, RoundingMode.HALF_UP); // 將稅金四捨五入到小數點後一位
-        // 如果四捨五入後仍有餘額，則再加0.05
-        if (tax.subtract(roundedTax).compareTo(BigDecimal.ZERO) > 0) {
-            roundedTax = roundedTax.add(new BigDecimal("0.05"));
-        }
         BigDecimal total = shoppingCart.calTotal(items.values()); // 計算總金額
 
         table.append("|").append(repeat(" ", totalInnerWidth)).append("|").append("\n");
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal)); // 格式化小計金額
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", roundedTax)); // 格式化稅金，保留兩位小數
-        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "total", total)); // 格式化總金額
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "subtotal", subtotal)); // 保留後兩位數
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "tax", tax)); // 保留後兩位數
+        table.append(String.format("|%-" + cellWidth + "s %" + (totalInnerWidth - cellWidth - 1) + ".2f|\n", "total", total)); // 保留後兩位數
         // 輸出表格的底部邊框
         table.append(border);
         return table.toString();

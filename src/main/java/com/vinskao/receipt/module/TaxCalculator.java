@@ -1,6 +1,7 @@
 package com.vinskao.receipt.module;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 
@@ -84,8 +85,7 @@ public class TaxCalculator {
             throw new IllegalArgumentException("商品列表不能為 null");
         }
         
-        // 將商品列表轉換成 Stream
-        return items.stream()
+        BigDecimal tax = items.stream()
                     .map(item -> {
                         if (item == null) { 
                             throw new IllegalArgumentException("商品列表中包含 null 項目");
@@ -120,5 +120,13 @@ public class TaxCalculator {
                     })
                     // 將所有計算出來的稅額相加， 從 0 起始累加每一次 map 中的 return
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        // Round up to nearest 0.05
+        BigDecimal roundedTax = tax.setScale(1, RoundingMode.HALF_UP);
+        if (tax.subtract(roundedTax).compareTo(BigDecimal.ZERO) > 0) {
+            roundedTax = roundedTax.add(new BigDecimal("0.05"));
+        }
+        
+        return roundedTax;
     }
 }
